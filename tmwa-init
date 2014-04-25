@@ -92,6 +92,7 @@ build()
     check_install
     cd $TMW_HOME/tmwa/
     TIME=`date`
+    make -C $TMW_HOME/tmwa/ clean-deps &> /dev/null
     make -C $TMW_HOME/tmwa/ clean &> /dev/null
     echo "Rebuilding tmwa (please be patient, this can take some time)..."
 
@@ -175,15 +176,15 @@ start()
     echo "Starting the servers..."
     if [ $TMWALOGIN ] 
     then
-        start-stop-daemon --start --oknodo --quiet -d $TMW_HOME/tmwa-server-data/login -b --exec $TMWALOGIN || ERROR=5000;
+        start-stop-daemon -c vagrant -g vagrant --start --oknodo --quiet -d $TMW_HOME/tmwa-server-data/login -b --exec $TMWALOGIN || ERROR=5000;
     fi
     if [ $TMWACHAR ]
     then
-        start-stop-daemon --start --oknodo --quiet -d $TMW_HOME/tmwa-server-data/world -b --exec $TMWACHAR || ERROR=5000;
+        start-stop-daemon -c vagrant -g vagrant --start --oknodo --quiet -d $TMW_HOME/tmwa-server-data/world -b --exec $TMWACHAR || ERROR=5000;
     fi
     if [ $TMWAMAP ]
     then
-        start-stop-daemon --start --oknodo --quiet -d $TMW_HOME/tmwa-server-data/world/map -b --exec $TMWAMAP || ERROR=5000;
+        start-stop-daemon -c vagrant -g vagrant --start --oknodo --quiet -d $TMW_HOME/tmwa-server-data/world/map -b --exec $TMWAMAP || ERROR=5000;
     fi
     check_error
     echo "###########################"
@@ -217,15 +218,15 @@ stop()
     echo "Trying to Stop TMW servers"
     if [ $TMWALOGIN ]
     then
-        start-stop-daemon --stop --oknodo --quiet --exec $TMWALOGIN || ERROR=5001;
+        start-stop-daemon -c vagrant -g vagrant --stop --oknodo --quiet --exec $TMWALOGIN || ERROR=5001;
     fi
     if [ $TMWACHAR ]
     then
-        start-stop-daemon --stop --oknodo --quiet --exec $TMWACHAR || ERROR=5001;
+        start-stop-daemon -c vagrant -g vagrant --stop --oknodo --quiet --exec $TMWACHAR || ERROR=5001;
     fi
     if [ $TMWAMAP ]
     then
-        start-stop-daemon --stop --oknodo --quiet --exec $TMWAMAP || ERROR=5001;
+        start-stop-daemon -c vagrant -g vagrant --stop --oknodo --quiet --exec $TMWAMAP || ERROR=5001;
     fi
     check_error
 }
